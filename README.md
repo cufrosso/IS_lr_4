@@ -12,7 +12,7 @@
 
 2) Пользовательские сценарии работы
 
-Пользователь попадает на страницу *index.php*. Вводит свой логин и текст поста. В случае корректного ввода данных, его сообщение появится на общей стене в обратном хронологическом порядке, вверху новые, внизу старые публикации. Пользователи могут ставить лайки на понравившиеся записи или убирать их. Также есть возможность изменить содержание записи, с помощью кнопки *change*, при нажании на которую пользователь переходит на страницу *update.php*, где вносит изменения в текст поста. Есть возможность удалять записи, с помощью кнопки *delete*.
+Пользователь попадает на страницу *index.php*.
 
 3. API сервера и хореография
 
@@ -40,36 +40,66 @@
 
 *Запрос*
 
-POST /lr_2/post.php HTTP/1.1
-Host: localhost
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryZKZMQG3xtLB9EA47
-sec-ch-ua: "Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+GET /lr_4_/serv.js HTTP/1.1 <br>
+Host: localhost <br>
+Accept: */* <br>
+sec-ch-ua: "Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109" <br>
+sec-ch-ua-mobile: ?0 <br>
+sec-ch-ua-platform: "Windows" <br>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 <br>
 
 *Ответ*
 
-HTTP/1.1 302 Found
-Connection: Keep-Alive
-Content-Length: 0
-Content-Type: text/html; charset=UTF-8
-Date: Sat, 24 Dec 2022 06:29:18 GMT
-Keep-Alive: timeout=120, max=999
-Location: index.php
-Server: Apache
-X-Content-Type-Options: nosniff
+HTTP/1.1 200 OK <br>
+Accept-Ranges: bytes <br>
+Content-Length: 7738 <br>
+Content-Type: application/javascript <br>
+Date: Wed, 11 Jan 2023 22:42:55 GMT <br>
+ETag: "1e3a-5f1f159537471" <br>
+Last-Modified: Tue, 10 Jan 2023 23:36:11 GMT <br>
+Server: Apache <br>
+X-Content-Type-Options: nosniff <br>
 
 7. Значимые фрагменты кода
 
-*Функция добавления канала*
-```php
+*Функция отрисовки игры*
+```js
+function draw() {
+    game.draw(); // игровое поле
+    // разделительная полоса
+    for (var i = 10; i < game.height; i += 45) {
+        context.fillStyle = "#ccc";
+        context.fillRect(game.width / 2 - 10, i, 20, 30);
+    }
+    // рисуем на поле счёт
+    context.font = 'bold 128px courier';
+    context.textAlign = 'center';
+    context.textBaseline = 'top';
+    context.fillStyle = '#ccc';
+    context.fillText(ai.scores, 100, 0);
+    context.fillText(player.scores, game.width - 100, 0);
+    ai.draw(); // левая ракетка
+    player.draw(); // ракетка игрока
+    ball.draw(); // шарик
+    if (!start) {
+        // вывод статстики
+        context.fillStyle = "#ccc";
+        context.globalAlpha = 0.7;
+        context.fillRect(0, 0, game.width, game.height);
+        context.font = 'bold 16px courier';
+        context.textBaseline = 'top';
+        context.fillStyle = '#000';
+        context.fillText("Total: " + game.total + " Win: " + game.win + " Lose: " + game.lose, game.width / 2, 0);
+        context.font = 'bold 60px courier';
+        context.textBaseline = 'top';
+        context.fillStyle = '#000';
+        context.font = 'bold 16px courier';
+        context.textBaseline = 'top';
+        context.fillStyle = '#000';
+        context.fillText("click on me", game.width / 2, game.height / 2 + 25);
+        context.textBaseline = 'bottom';
 
+    }
+}
 ```
 
-*Функция отправления сообщения*
-```php
-
-```

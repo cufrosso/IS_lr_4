@@ -22,18 +22,6 @@
 
 5. Алгоритмы
 
-*Add post*
-
-![add]()
-
-*Delete post*
-
-![delete]()
-
-*Reaction*
-
-![Reaction]()
-
 6. HTTP запросы/ответы
 
 *Запрос*
